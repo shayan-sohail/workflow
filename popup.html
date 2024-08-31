@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workflow Extension</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- First Screen -->
+    <div id="main-screen">
+      <h3 class="title">Workflows</h3>
+      <div class="container">
+        <p style="vertical-align: text-top">
+          Quickly launch multiple websites with a single click.
+        </p>
+      </div>
+      <hr />
+      <div>
+        <button id="create-workflow">Create Workflow</button>
+      </div>
+    </div>
+
+    <!-- Second Screen -->
+    <div id="create-workflow-screen" style="display: none">
+      <h3 class="title">DSA</h3>
+      <div class="container">
+        <div class="url-list">
+          <div class="url-item">
+            <input type="text" placeholder="Add URL" class="url-input" />
+            <button class="delete-icon">&#128465;</button>
+            <!-- Trash icon -->
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div>
+        <button id="save-workflow" class="save-button">&#128190; Save</button>
+        <!-- Save icon -->
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

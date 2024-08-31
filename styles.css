@@ -1,0 +1,118 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 300px;
+    width: 300px;
+    background-color: #2a2a2a; /* Dark background color */
+    color: #ffffff; /* White text color */
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 18px;
+    margin: 20px 0px 0px 20px;
+    color: #e1e1e1; /* Slightly lighter than white */
+}
+
+.container {
+    text-align: left;
+    margin: 0px 0px 0px 20px;
+    flex-grow: 1;
+}
+
+p {
+    margin: 10px 0;
+    color: #b3b3b3; /* Gray color for secondary text */
+    font-size: 14px;
+}
+
+hr {
+    width: 100%;
+    border: none;
+    margin-bottom: 0px;
+    height: 1px;
+    background-color: #444444; /* Subtle separator color */
+}
+
+button {
+    padding: 10px 0px;
+    font-size: 14px;
+    width: 100%;
+    cursor: pointer;
+    background-color: #2a2a2a; /* Button background color */
+    border: none;
+    color: #e1e1e1; /* Button text color */
+    margin: 0;
+}
+
+button:hover {
+    background-color: #363636; /* Darker on hover */
+}
+
+/* Flexbox layout for positioning */
+#main-screen,
+#create-workflow-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#main-screen > div:last-child,
+#create-workflow-screen > div:last-child {
+    margin-top: auto;
+}
+
+/* Add these to the existing styles */
+
+.url-list {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.url-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.url-input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #333;
+    color: #e1e1e1;
+    outline: none;
+    font-size: 14px;
+}
+
+.url-input::placeholder {
+    color: #777;
+}
+
+.delete-icon {
+    background-color: transparent;
+    border: none;
+    color: #e1e1e1;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.save-button {
+    font-size: 14px;
+    text-align: center;
+    background-color: #2a2a2a;
+    width: 100%;
+    padding: 10px 0px;
+    border: none;
+    cursor: pointer;
+    color: #e1e1e1;
+    margin-top: 10px;
+}
+
+.save-button:hover {
+    background-color: #363636;
+}
