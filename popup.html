@@ -15,28 +15,31 @@
           Quickly launch multiple websites with a single click.
         </p>
       </div>
-      <hr />
+      <hr>
       <div>
-        <button id="create-workflow">Create Workflow</button>
+        <button id="create-workflow" style="position: absolute; bottom: 0; height: 40px;">Create Workflow</button>
       </div>
     </div>
-
-    <!-- Second Screen -->
+    
     <div id="create-workflow-screen" style="display: none">
-      <h3 class="title">DSA</h3>
+      <h4 class="title" id="WorkflowTitle" contenteditable style="outline: none">Untitled</h4>
       <div class="container">
         <div class="url-list">
           <div class="url-item">
-            <input type="text" placeholder="Add URL" class="url-input" />
-            <button class="delete-icon">&#128465;</button>
-            <!-- Trash icon -->
+            <input
+              type="text"
+              placeholder="Add URL"
+              class="url-input"
+              style="width: 250px"
+            />
+            <button class="field-icon" style="width: 50px">+</button>
+            <button class="field-icon" style="width: 50px">×</button>
           </div>
         </div>
       </div>
-      <hr />
+      <hr>
       <div>
-        <button id="save-workflow" class="save-button">&#128190; Save</button>
-        <!-- Save icon -->
+        <button id="save-workflow" class="save-button" style="position: absolute; bottom: 0;">&#128190; Save</button>
       </div>
     </div>
 
