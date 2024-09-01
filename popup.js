@@ -1,24 +1,22 @@
-document.getElementById("create-workflow").addEventListener("click", function() {
-    document.getElementById("main-screen").style.display = "none";
-    document.getElementById("create-workflow-screen").style.display = "block";
+class Workflow {
+    constructor(title, urls) {
+    this.title = title;
+    this.urls = urls;
+}
+}
+// Get references to elements
+const createWorkflowBtn = document.getElementById("CreateWorkFlowButton");
+const saveWorkflowBtn = document.getElementById("SaveWorkFlowButton");
+
+document.getElementById("CreateWorkFlowButton").addEventListener("click", function() {
+    document.getElementById("MainScreen").style.display = "none";
+    document.getElementById("EditScreen").style.display = "block";
     const elementToFocus = document.getElementById("WorkflowTitle");
     elementToFocus.focus();
 });
 
-document.getElementById("save-workflow").addEventListener("click", function() {
-    document.getElementById("create-workflow-screen").style.display = "none";
-    document.getElementById("main-screen").style.display = "block";
-});
-
-// Get the URL list container
-const urlList = document.querySelector('.url-list');
-
-// Add event listeners to the + and x buttons
-urlList.addEventListener('click', (event) => {
-  const button = event.target;
-
-  // If the clicked button is the + button
-  if (button.classList.contains('field-icon') && button.textContent === '+') {
+document.getElementById("AddUrlButton").addEventListener("click", function(event) {
+    const button = event.target;
     // Create a new URL item element
     const newUrlItem = document.createElement('div');
     newUrlItem.classList.add('url-item');
@@ -33,12 +31,12 @@ urlList.addEventListener('click', (event) => {
     const plusButton = document.createElement('button');
     plusButton.classList.add('field-icon');
     plusButton.style.width = '50px';
-    plusButton.innerHTML = '+';
+    plusButton.innerHTML = '➕';
 
     const crossButton = document.createElement('button');
     crossButton.classList.add('field-icon');
     crossButton.style.width = '50px';
-    crossButton.innerHTML = '×';
+    crossButton.innerHTML = '❌';
 
     // Append the input and buttons to the new URL item
     newUrlItem.appendChild(input);
@@ -47,14 +45,15 @@ urlList.addEventListener('click', (event) => {
 
     // Insert the new URL item after the clicked button's parent
     button.parentNode.after(newUrlItem);
-  }
+});
 
-  // If the clicked button is the x button
-  if (button.classList.contains('field-icon') && button.textContent === '×') {
-    // Check if there's only one URL item left
-    const urlItems = document.querySelectorAll('.url-item');
-    if (urlItems.length > 1) {
-      button.parentNode.remove();
-    }
-  }
+document.getElementById("DeleteUrlButton").addEventListener("click", function(event) {
+    const button = event.target;
+    if (button.classList.contains('field-icon') && button.textContent === '❌') {
+        // Check if there's only one URL item left
+        const urlItems = document.querySelectorAll('.url-item');
+        if (urlItems.length > 1) {
+          button.parentNode.remove();
+        }
+      }
 });

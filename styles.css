@@ -57,15 +57,15 @@ button:hover {
 }
 
 /* Flexbox layout for positioning */
-#main-screen,
-#create-workflow-screen {
+#MainScreen,
+#EditScreen {
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-#main-screen > div:last-child,
-#create-workflow-screen > div:last-child {
+#MainScreen > div:last-child,
+#EditScreen > div:last-child {
     margin-top: auto;
 }
 
@@ -79,13 +79,11 @@ button:hover {
 .url-item {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 .url-input {
-    padding: 5px;
     border: 1px solid #2a2a2a;
-    /* border-radius: 5px; */
     background-color: #2a2a2a;
     color: #e1e1e1;
     outline: none;
