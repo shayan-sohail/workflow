@@ -15,7 +15,7 @@ document.getElementById("CreateWorkFlowButton").addEventListener("click", functi
     elementToFocus.focus();
 });
 
-document.getElementById("AddUrlButton").addEventListener("click", function(event) {
+function AddUrlClicked(event) {
     const button = event.target;
     // Create a new URL item element
     const newUrlItem = document.createElement('div');
@@ -32,11 +32,13 @@ document.getElementById("AddUrlButton").addEventListener("click", function(event
     plusButton.classList.add('field-icon');
     plusButton.style.width = '50px';
     plusButton.innerHTML = '➕';
+    plusButton.addEventListener('click', AddUrlClicked);
 
     const crossButton = document.createElement('button');
     crossButton.classList.add('field-icon');
     crossButton.style.width = '50px';
     crossButton.innerHTML = '❌';
+    crossButton.addEventListener('click', DeleteUrlClicked);
 
     // Append the input and buttons to the new URL item
     newUrlItem.appendChild(input);
@@ -45,9 +47,9 @@ document.getElementById("AddUrlButton").addEventListener("click", function(event
 
     // Insert the new URL item after the clicked button's parent
     button.parentNode.after(newUrlItem);
-});
+}
 
-document.getElementById("DeleteUrlButton").addEventListener("click", function(event) {
+function DeleteUrlClicked(event) {
     const button = event.target;
     if (button.classList.contains('field-icon') && button.textContent === '❌') {
         // Check if there's only one URL item left
@@ -55,5 +57,9 @@ document.getElementById("DeleteUrlButton").addEventListener("click", function(ev
         if (urlItems.length > 1) {
           button.parentNode.remove();
         }
-      }
-});
+    }
+}
+
+document.getElementById("AddUrlButton").addEventListener("click", AddUrlClicked);
+
+document.getElementById("DeleteUrlButton").addEventListener("click", DeleteUrlClicked);
