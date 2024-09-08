@@ -23,16 +23,13 @@ class Workflow {
 }
 
 var Workflows = []
-// Get references to elements
-const createWorkflowBtn = document.getElementById("CreateWorkFlowButton");
-const saveWorkflowBtn = document.getElementById("SaveWorkFlowButton");
 
 document.getElementById("CreateWorkFlowButton").addEventListener("click", function() {
     document.getElementById("MainScreen").style.display = "none";
     document.getElementById("EditScreen").style.display = "block";
     workflowTitle = document.getElementById("WorkflowTitle");
 
-    workflowTitle.textContent = 'Untitled';
+    workflowTitle.value = '';
     const urlList = document.querySelector('.url-list');
     urlList.innerHTML = ''; // Clears all the child elements inside the .url-list
 
@@ -70,13 +67,30 @@ document.getElementById("CreateWorkFlowButton").addEventListener("click", functi
     elementToFocus.focus();
 });
 
+//Backspace shortcut to go back to main screen
+
 document.getElementById("SaveWorkFlowButton").addEventListener("click", function() {
     
-    const workflowName = document.getElementById('WorkflowTitle').textContent;
+    const workflowName = document.getElementById('WorkflowTitle').value;
+    if (workflowName === "")
+    {
+        ShowStatusMessage(`Please enter workflow name`);
+        return;
+    }
+    for (var i = 0; i < Workflows.length; i++)
+    {
+        if (Workflows[i].name == workflowName)
+        {
+            ShowStatusMessage(`Workflow with name ${workflowName} already exists`);
+            return;
+        }
+    }
+
     const introText = document.getElementById('IntroText');
     const workflow = new Workflow(workflowName);
     const urlInputs = document.querySelectorAll('#UrlList .url-input');
         urlInputs.forEach((input, index) => {
+        //Validate here
         workflow.addUrl(input.value);
     });
 
@@ -87,12 +101,13 @@ document.getElementById("SaveWorkFlowButton").addEventListener("click", function
     }
     else{
         ShowStatusMessage(`Unable to create workflow as no valid url found!`);
+        return;
     }
 
     if (Workflows.length > 0)
-        introText.style.opacity = '0';
+        introText.style.display = "none";
     else
-        introText.style.opacity = '100';
+        introText.style.display = "inline";
     
     document.getElementById("MainScreen").style.display = "block";
     document.getElementById("EditScreen").style.display = "none";
