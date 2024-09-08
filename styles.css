@@ -74,12 +74,17 @@ button:hover {
 
 /* Add these to the existing styles */
 
+.workflow-list {
+    text-align: left;
+    margin: 0;
+}
+
 .url-list {
     text-align: left;
     margin: 0;
 }
 
-.url-item {
+.list-item {
     display: flex;
     align-items: center;
     margin-top: 0px;
@@ -121,7 +126,7 @@ button:hover {
 }
 
 .info-string {
-    font-size: 10px;
+    font-size: 11px;
     text-align: left;
     background-color: #2a2a2a;
     width: 100%;
