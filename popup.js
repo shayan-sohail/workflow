@@ -3,6 +3,7 @@ class Workflow {
     constructor(name, urls = []) {
       this.name = name; // A string variable to hold the name
       this.urls = urls; // A list of strings to hold URLs
+      this.editFlag = false;
     }
   
     // Method to add a URL to the list
@@ -27,47 +28,8 @@ var Workflows = []
 document.getElementById("CreateWorkFlowButton").addEventListener("click", function() {
     document.getElementById("MainScreen").style.display = "none";
     document.getElementById("EditScreen").style.display = "block";
-    workflowTitle = document.getElementById("WorkflowTitle");
-
-    workflowTitle.value = '';
-    const urlList = document.querySelector('.url-list');
-    urlList.innerHTML = ''; // Clears all the child elements inside the .url-list
-
-    const newUrlItem = document.createElement('div');
-    newUrlItem.classList.add('list-item');
-
-    // Create the input and buttons for the new URL item
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Add URL';
-    input.classList.add('url-input');
-    input.style.width = '250px';
-
-    const plusButton = document.createElement('button');
-    plusButton.classList.add('field-icon');
-    plusButton.style.width = '50px';
-    plusButton.innerHTML = '➕';
-    plusButton.addEventListener('click', AddUrlClicked);
-
-    const crossButton = document.createElement('button');
-    crossButton.classList.add('field-icon');
-    crossButton.style.width = '50px';
-    crossButton.innerHTML = '❌';
-    crossButton.addEventListener('click', DeleteUrlClicked);
-
-    // Append the input and buttons to the new URL item
-    newUrlItem.appendChild(input);
-    newUrlItem.appendChild(plusButton);
-    newUrlItem.appendChild(crossButton);
-
-    // Insert the new URL item after the clicked button's parent
-    urlList.appendChild(newUrlItem);
-
-    const elementToFocus = document.getElementById("WorkflowTitle");
-    elementToFocus.focus();
+    PopulateEditScreen();
 });
-
-//Backspace shortcut to go back to main screen
 
 document.getElementById("SaveWorkFlowButton").addEventListener("click", function() {
     
@@ -77,27 +39,48 @@ document.getElementById("SaveWorkFlowButton").addEventListener("click", function
         ShowStatusMessage(`Please enter workflow name`);
         return;
     }
+    var editFlag = false;
+    var editIndex = -1;
     for (var i = 0; i < Workflows.length; i++)
     {
         if (Workflows[i].name == workflowName)
         {
-            ShowStatusMessage(`Workflow with name ${workflowName} already exists`);
-            return;
+            if (Workflows[i].editFlag != true)
+            {
+                ShowStatusMessage(`Workflow with name ${workflowName} already exists`);
+                return;
+            }
+            else
+            {
+                editFlag = true;
+                editIndex = i;
+                Workflows.splice(i, 1);
+            }
         }
     }
 
     const introText = document.getElementById('IntroText');
     const workflow = new Workflow(workflowName);
+    var invalidUrlCount = 0
     const urlInputs = document.querySelectorAll('#UrlList .url-input');
         urlInputs.forEach((input, index) => {
         //Validate here
-        workflow.addUrl(input.value);
+        if (isValidUrl(input.value)){
+            workflow.addUrl(input.value);
+        }else{
+            invalidUrlCount = invalidUrlCount + 1;
+        }
     });
 
     if (workflow.urls.length > 0){
-        Workflows.push(workflow);
+        if (editFlag)
+        {
+            Workflows.splice(editIndex, 0, workflow);
+        } else {
+            Workflows.push(workflow);
+        }
         SyncWorkflows();
-        ShowStatusMessage(`${workflow.urls.length} urls added to ${workflowName}, Total Workflows: ${Workflows.length}`);
+        ShowStatusMessage(`${workflow.urls.length} urls added to ${workflowName}, Invalid URLs: ${invalidUrlCount}`);
     }
     else{
         ShowStatusMessage(`Unable to create workflow as no valid url found!`);
@@ -113,6 +96,94 @@ document.getElementById("SaveWorkFlowButton").addEventListener("click", function
     document.getElementById("EditScreen").style.display = "none";
 });
 
+
+function PopulateEditScreen(workflow=null){
+    var isedit = workflow != null;
+    workflowTitle = document.getElementById("WorkflowTitle");
+    const urlList = document.querySelector('.url-list');
+
+    if (isedit)
+    {
+        workflow.editFlag = true;
+        workflowTitle.value = workflow.name;
+        urlList.innerHTML = ''; // Clears all the child elements inside the .url-list
+        workflow.urls.forEach(url => {
+            const newUrlItem = document.createElement('div');
+            newUrlItem.classList.add('list-item');
+    
+            // Create the input and buttons for the new URL item
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = url
+            input.placeholder = 'Add URL';
+            input.classList.add('url-input');
+            input.style.width = '250px';
+    
+            const plusButton = document.createElement('button');
+            plusButton.classList.add('field-icon');
+            plusButton.style.width = '50px';
+            plusButton.innerHTML = '➕';
+            plusButton.addEventListener('click', AddUrlClicked);
+    
+            const crossButton = document.createElement('button');
+            crossButton.classList.add('field-icon');
+            crossButton.style.width = '50px';
+            crossButton.innerHTML = '❌';
+            crossButton.addEventListener('click', DeleteUrlClicked);
+    
+            // Append the input and buttons to the new URL item
+            newUrlItem.appendChild(input);
+            newUrlItem.appendChild(plusButton);
+            newUrlItem.appendChild(crossButton);
+    
+            // Insert the new URL item after the clicked button's parent
+            urlList.appendChild(newUrlItem);
+        })
+    }
+    else
+    {
+        workflowTitle.value = '';
+        urlList.innerHTML = ''; // Clears all the child elements inside the .url-list
+        const newUrlItem = document.createElement('div');
+        newUrlItem.classList.add('list-item');
+
+        // Create the input and buttons for the new URL item
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Add URL';
+        input.classList.add('url-input');
+        input.style.width = '250px';
+
+        const plusButton = document.createElement('button');
+        plusButton.classList.add('field-icon');
+        plusButton.style.width = '50px';
+        plusButton.innerHTML = '➕';
+        plusButton.addEventListener('click', AddUrlClicked);
+
+        const crossButton = document.createElement('button');
+        crossButton.classList.add('field-icon');
+        crossButton.style.width = '50px';
+        crossButton.innerHTML = '❌';
+        crossButton.addEventListener('click', DeleteUrlClicked);
+
+        // Append the input and buttons to the new URL item
+        newUrlItem.appendChild(input);
+        newUrlItem.appendChild(plusButton);
+        newUrlItem.appendChild(crossButton);
+
+        // Insert the new URL item after the clicked button's parent
+        urlList.appendChild(newUrlItem);
+
+        const elementToFocus = document.getElementById("WorkflowTitle");
+        elementToFocus.focus();
+    }
+}
+
+function isValidUrl(string) {
+    const regex = /^(https?:\/\/)?(www\.)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/;
+    return regex.test(string);
+}
+  
 function SyncWorkflows()
 {
     const workflowList = document.querySelector('.workflow-list');
@@ -161,11 +232,28 @@ function OpenWorkflowClicked(event)
 }
 function EditWorkflowClicked(event)
 {
-    alert('Edit Workflow Clicked');
+    const parentDiv = event.target.parentNode;
+    const firstButton = parentDiv.querySelector('button:first-child');
+    const workflowName = firstButton.textContent;
+
+    for (var i = 0; i < Workflows.length; i++)
+    {
+        console.log(`i: ${i}, workflowname: xx${workflowName}xx, iname: xx${Workflows[i].name}xx`);
+        if (Workflows[i].name === workflowName)
+        {
+            document.getElementById("MainScreen").style.display = "none";
+            document.getElementById("EditScreen").style.display = "block";
+            PopulateEditScreen(Workflows[i]);
+            return;
+        }
+    }
+
 }
+
 function DeleteWorkflowClicked(event)
 {
     alert('Delete Workflow Clicked');
+    const button = event.target;
 }
 
 function AddUrlClicked(event) {
@@ -213,11 +301,6 @@ function DeleteUrlClicked(event) {
     }
 }
 
-document.getElementById("AddUrlButton").addEventListener("click", AddUrlClicked);
-
-document.getElementById("DeleteUrlButton").addEventListener("click", DeleteUrlClicked);
-
-
 function ShowStatusMessage(message) {
     const statusBar = document.getElementById('StatusBar');
     statusBar.textContent = message;
@@ -226,4 +309,4 @@ function ShowStatusMessage(message) {
     setTimeout(() => {
         statusBar.style.display = 'none'; // Hides the label
     }, 2000);
-  }
+}
