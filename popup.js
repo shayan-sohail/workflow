@@ -228,7 +228,29 @@ function SyncWorkflows()
 
 function OpenWorkflowClicked(event)
 {
-    alert('Open Workflow Clicked');
+    const parentDiv = event.target.parentNode;
+    const firstButton = parentDiv.querySelector('button:first-child');
+    var target = null;
+    for (var i = 0; i < Workflows.length; i++)
+    {
+        if (Workflows[i].name == firstButton.textContent)
+        {
+            target = Workflows[i];
+            break;
+        }
+    }
+
+    var urls = "";
+    if (target != null)
+    {
+        for(var i = 0; i < target.urls.length; i++)
+        {
+            console.log(`URL is ${target.urls[i]}`);
+            urls += target.urls[i];
+            urls += ", ";
+        }
+    }
+    alert(`Open Workflow Clicked with name ${firstButton.textContent}, and  urls are ${urls}`);
 }
 function EditWorkflowClicked(event)
 {
@@ -254,6 +276,7 @@ function DeleteWorkflowClicked(event)
 {
     alert('Delete Workflow Clicked');
     const button = event.target;
+    
 }
 
 function AddUrlClicked(event) {
