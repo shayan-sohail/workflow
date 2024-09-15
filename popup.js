@@ -90,7 +90,7 @@ document.getElementById("SaveWorkFlowButton").addEventListener("click", function
     if (Workflows.length > 0)
         introText.style.display = "none";
     else
-        introText.style.display = "inline";
+        introText.style.display = "block";
     
     document.getElementById("MainScreen").style.display = "block";
     document.getElementById("EditScreen").style.display = "none";
@@ -243,15 +243,17 @@ function OpenWorkflowClicked(event)
     var urls = "";
     if (target != null)
     {
-        for(var i = 0; i < target.urls.length; i++)
-        {
-            console.log(`URL is ${target.urls[i]}`);
-            urls += target.urls[i];
-            urls += ", ";
-        }
+        // Loop through the array and open each URL in a new tab
+        target.urls.forEach(url => {
+            var tempUrl = url;
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                tempUrl = 'https://' + url; // Prepend 'https://' if missing
+              }
+            window.open(tempUrl, "_blank"); // _blank ensures it opens in a new tab
+        });
     }
-    alert(`Open Workflow Clicked with name ${firstButton.textContent}, and  urls are ${urls}`);
 }
+
 function EditWorkflowClicked(event)
 {
     const parentDiv = event.target.parentNode;
@@ -274,9 +276,21 @@ function EditWorkflowClicked(event)
 
 function DeleteWorkflowClicked(event)
 {
-    alert('Delete Workflow Clicked');
     const button = event.target;
-    
+    if (button.classList.contains('field-icon') && button.textContent === '❌') {
+          button.parentNode.remove();
+    }
+
+    const parentDiv = event.target.parentNode;
+    const firstButton = parentDiv.querySelector('button:first-child');
+    Workflows = Workflows.filter(workflow => workflow.name !== firstButton.textContent);
+
+    const introText = document.getElementById('IntroText');
+    if (Workflows.length > 0)
+        introText.style.display = "none";
+    else
+        introText.style.display = "block";
+
 }
 
 function AddUrlClicked(event) {
