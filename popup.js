@@ -92,10 +92,52 @@ document.getElementById("SaveWorkFlowButton").addEventListener("click", function
     else
         introText.style.display = "block";
     
+    SaveWorkflowsToStorage();
     document.getElementById("MainScreen").style.display = "block";
     document.getElementById("EditScreen").style.display = "none";
 });
 
+function SaveWorkflowsToStorage() {
+    try {
+        // Convert Workflows array to JSON string and store it in localStorage
+        localStorage.setItem('workflows', JSON.stringify(Workflows));
+        console.log('Workflows saved successfully.');
+    } catch (error) {
+        console.error('Error saving workflows to storage:', error);
+    }
+}
+  
+// Function to load the array of Workflow objects from localStorage
+function LoadWorkflowsFromStorage() {
+    try {
+        // Retrieve the JSON string from localStorage
+        const workflowsData = localStorage.getItem('workflows');
+        if (workflowsData) {
+        // Parse the JSON string back into an array of Workflow objects
+        const parsedWorkflows = JSON.parse(workflowsData);
+
+        // Recreate the Workflow objects and assign to the Workflows array
+        Workflows = parsedWorkflows.map(wf => {
+            let workflow = new Workflow(wf.name, wf.urls);
+            workflow.editFlag = wf.editFlag; // Copy additional properties if needed
+            return workflow;
+        });
+        console.log('Workflows loaded successfully.');
+        } else {
+        console.log('No workflows found in storage.');
+        }
+    } catch (error) {
+        console.error('Error loading workflows from storage:', error);
+    }
+
+    const introText = document.getElementById('IntroText');
+    if (Workflows.length > 0)
+        introText.style.display = "none";
+    else
+        introText.style.display = "block";
+
+    SyncWorkflows();
+}
 
 function PopulateEditScreen(workflow=null){
     var isedit = workflow != null;
@@ -285,6 +327,7 @@ function DeleteWorkflowClicked(event)
     const firstButton = parentDiv.querySelector('button:first-child');
     Workflows = Workflows.filter(workflow => workflow.name !== firstButton.textContent);
 
+    SaveWorkflowsToStorage();
     const introText = document.getElementById('IntroText');
     if (Workflows.length > 0)
         introText.style.display = "none";
@@ -347,3 +390,5 @@ function ShowStatusMessage(message) {
         statusBar.style.display = 'none'; // Hides the label
     }, 2000);
 }
+
+LoadWorkflowsFromStorage();
