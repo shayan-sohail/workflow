@@ -1,14 +1,15 @@
 {
-    "manifest_version": 3,
-    "name": "Workflow",
-    "version": "1.0",
-    "action": {
+  "manifest_version": 3,
+  "name": "Workflow",
+  "version": "1.0",
+  "action": {
       "default_popup": "popup.html",
       "default_icon": "icon128.png"
-    },
-    "icons":{
-        "128": "icon128.png"
-    },
-    "permissions": []
-  }
-  
+  },
+  "icons": {
+      "128": "icon128.png"
+  },
+  "permissions": [
+      "tabs"
+  ]
+}

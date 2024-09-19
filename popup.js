@@ -25,7 +25,30 @@ class Workflow {
 
 var Workflows = []
 
+function CreateWorkflowFromOpenedTabs() {
+    
+    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+        const workflow = new Workflow(""); // Initialize or update the workflow object here
+    
+        if (tabs && tabs.length > 0) {
+            tabs.forEach((tab) => {
+                workflow.urls.push(tab.url);
+                console.log(`Tab ID: ${tab.id}, Title: ${tab.title}, URL: ${tab.url}`);
+            });
+    
+            // Call ImportWorkflowClicked after the tabs are processed
+            LoadOpenedTabs(workflow);
+        } else {
+            console.log("No tabs open in the current window.");
+    
+            // Still call ImportWorkflowClicked, in case there are no tabs
+            LoadOpenedTabs(workflow);
+        }
+    });    
+}
+
 document.getElementById("CreateWorkFlowButton").addEventListener("click", function() {
+
     document.getElementById("MainScreen").style.display = "none";
     document.getElementById("EditScreen").style.display = "block";
     PopulateEditScreen();
@@ -107,7 +130,7 @@ function SaveWorkflowsToStorage() {
     }
 }
   
-// Function to load the array of Workflow objects from localStorage
+
 function LoadWorkflowsFromStorage() {
     try {
         // Retrieve the JSON string from localStorage
@@ -138,6 +161,8 @@ function LoadWorkflowsFromStorage() {
 
     SyncWorkflows();
 }
+
+
 
 function PopulateEditScreen(workflow=null){
     var isedit = workflow != null;
@@ -313,7 +338,15 @@ function EditWorkflowClicked(event)
             return;
         }
     }
+}
 
+function LoadOpenedTabs(workflow)
+{
+    console.log(`Import: workflowname: xx${workflow.name}xx, workflowLength: xx${workflow.urls.length}xx`);
+    document.getElementById("MainScreen").style.display = "none";
+    document.getElementById("EditScreen").style.display = "block";
+    PopulateEditScreen(workflow);
+    return;
 }
 
 function DeleteWorkflowClicked(event)
