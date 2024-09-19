@@ -16,6 +16,39 @@ body {
     color: #e1e1e1; /* Slightly lighter than white */
 }
 
+.title-container {
+    margin: 20px 0px 0px 20px;
+    display: flex;
+    align-items: center; /* Vertically align title and buttons */
+    justify-content: space-between; /* Space between title and buttons */
+  }
+  
+  .title {
+    margin: 0; /* Ensure no extra margin on the title */
+  }
+  
+  .button-group {
+    display: flex; /* Make buttons stay inline */
+    margin-right: 10px;
+  }
+  
+  .button-group button {
+    padding: 5px;
+    font-size: 14px;   /* Adjust the font size of buttons */
+    cursor: pointer;   /* Show pointer on hover */
+  }
+  
+  
+  .title {
+    margin-right: auto; /* Pushes the buttons to the right */
+  }
+  
+  .small-btn {
+    padding: 5px 10px; /* Adjust the padding to make the button "small" */
+    font-size: 12px;    /* Adjust the font size */
+    margin-left: 5px;   /* Adds space between the buttons */
+  }
+
 .container {
     text-align: left;
     margin: 0px 0px 0px 20px;

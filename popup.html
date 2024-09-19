@@ -9,7 +9,15 @@
   <body>
     <!-- First Screen -->
     <div id="MainScreen">
-      <h3 class="title">Workflows</h3>
+      <div class="title-container">
+        <h3 class="title">Workflows</h3>
+        <div class="button-group">
+          <button title="Create Workflow from Opened Tabs" id="CaptureTabsButton" style="width: 35px; height: 35px;">🔃</button>
+          <button title="Load Workflows from JSON file" id="LoadWorkflowsFromFileButton" style="width: 35px; height: 35px;">🔽</button>
+          <button title="Save Workflows as JSON file" id="SaveWorkflowsAsFile" style="width: 35px; height: 35px;">🔼</button>
+        </div>
+      </div>
+      
       <div>
         <p id="IntroText" style="vertical-align: text-top; margin-left: 20px;">Quickly launch multiple websites with a single click. </p>
       </div>
@@ -33,7 +41,9 @@
     
     <!-- Edit Screen -->
     <div id="EditScreen" style="display: none">
-      <input class="title" id="WorkflowTitle" style="outline: none; margin-bottom: 10px;" placeholder="Untitled"/>
+      <div class="title-container">
+        <input class="title" id="WorkflowTitle" style="outline: none; margin-bottom: 10px;" placeholder="Untitled"/>
+      </div>
       <div id="UrlList" class="container">
         <div class="url-list">
           <div class="list-item">
