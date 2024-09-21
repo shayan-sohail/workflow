@@ -120,6 +120,100 @@ document.getElementById("SaveWorkFlowButton").addEventListener("click", function
     document.getElementById("EditScreen").style.display = "none";
 });
 
+document.getElementById("SaveWorkflowsAsFileButton").addEventListener("click", function() {
+    const filteredWorkflows = Workflows.map(workflow => ({
+        name: workflow.name,
+        urls: workflow.urls
+    }));
+
+    // Convert the filtered array of Workflow objects to JSON
+    const jsonData = JSON.stringify(filteredWorkflows, null, 2);
+
+    // Create a Blob with the JSON data
+    const blob = new Blob([jsonData], { type: "application/json" });
+
+    // Create an anchor element and trigger the download
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Workflow.json";
+    a.click();
+
+    // Clean up by revoking the object URL
+    URL.revokeObjectURL(a.href);
+});
+
+document.getElementById("LoadWorkflowsFromFileButton").addEventListener("click", function() {
+
+    var newWorkflowsAddedCount = 0;
+    LoadWorkflowsFromFile().then(workflows => {
+        console.log('Workflows loaded:', workflows);
+        workflows.forEach(workflow => {
+            const isPresent = Workflows.some(x => x.name === workflow.name);
+            if (!isPresent) {
+                // Add the workflow if it's not already present in the global list
+                console.log(`Added new workflow with name ${workflow.name} in Global list`);
+                Workflows.push(workflow);
+                newWorkflowsAddedCount++;
+            }
+            else
+            {
+                console.log(`Workflow with name ${workflow.name} already exists in Global list`);
+            }
+        });
+
+        if (newWorkflowsAddedCount > 0)
+        {
+            SyncWorkflows();
+            SaveWorkflowsToStorage();
+            ShowStatusMessage(`${newWorkflowsAddedCount} workflow(s) loaded.`)
+        }
+    }).catch(error => {
+        console.error(error);
+    });
+
+});
+
+function LoadWorkflowsFromFile() {
+    return new Promise((resolve, reject) => {
+        // Create an input element to trigger the file picker dialog
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json'; // Accept only .json files
+
+        // Add an event listener to handle file selection
+        input.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+
+                // When file is loaded, process the content
+                reader.onload = function(event) {
+                    try {
+                        const jsonData = JSON.parse(event.target.result);
+
+                        // Validate and convert the JSON data to Workflow objects
+                        const workflows = jsonData.map(w => new Workflow(w.name, w.urls));
+
+                        // Resolve the promise with the array of Workflow objects
+                        resolve(workflows);
+                    } catch (error) {
+                        console.error('Unable to parse the JSON file');
+                        reject('Unable to parse the JSON file');
+                    }
+                };
+
+                // Read the file as a text
+                reader.readAsText(file);
+            } else {
+                reject('No file selected');
+            }
+        });
+
+        // Trigger the file picker dialog
+        input.click();
+    });
+}
+
 function SaveWorkflowsToStorage() {
     try {
         // Convert Workflows array to JSON string and store it in localStorage
@@ -161,8 +255,6 @@ function LoadWorkflowsFromStorage() {
 
     SyncWorkflows();
 }
-
-
 
 function PopulateEditScreen(workflow=null){
     var isedit = workflow != null;
@@ -259,6 +351,11 @@ function SyncWorkflows()
 {
     const workflowList = document.querySelector('.workflow-list');
     workflowList.innerHTML = ''; // Clears all the child elements inside the .url-list
+    const introText = document.getElementById('IntroText');
+    if (Workflows.length > 0)
+        introText.style.display = "none";
+    else
+        introText.style.display = "block";
 
     Workflows.forEach(workflow => {
         // Create a new div with the class 'url-item'
@@ -392,7 +489,7 @@ function AddUrlClicked(event) {
     plusButton.classList.add('field-icon');
     plusButton.style.width = '50px';
     plusButton.innerHTML = '➕';
-    crossButton.title = "Add URL below";
+    plusButton.title = "Add URL below";
     plusButton.addEventListener('click', AddUrlClicked);
 
     const crossButton = document.createElement('button');
