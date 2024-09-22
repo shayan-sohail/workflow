@@ -307,6 +307,7 @@ function PopulateEditScreen(workflow=null){
     
             // Create the input and buttons for the new URL item
             const input = createInputUrlField();
+            input.value = url;
             const plusButton = createPlusButton();
             const crossButton = createCrossButton();
     
