@@ -208,7 +208,6 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-
 function LoadWorkflowsFromFile() {
     return new Promise((resolve, reject) => {
         // Create an input element to trigger the file picker dialog
@@ -307,26 +306,9 @@ function PopulateEditScreen(workflow=null){
             newUrlItem.classList.add('list-item');
     
             // Create the input and buttons for the new URL item
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = url
-            input.placeholder = 'Add URL';
-            input.classList.add('url-input');
-            input.style.width = '250px';
-    
-            const plusButton = document.createElement('button');
-            plusButton.classList.add('field-icon');
-            plusButton.style.width = '50px';
-            plusButton.innerHTML = '➕';
-            plusButton.title = "Add URL below";
-            plusButton.addEventListener('click', AddUrlClicked);
-    
-            const crossButton = document.createElement('button');
-            crossButton.classList.add('field-icon');
-            crossButton.style.width = '50px';
-            crossButton.innerHTML = '❌';
-            crossButton.title = "Delete URL";
-            crossButton.addEventListener('click', DeleteUrlClicked);
+            const input = createInputUrlField();
+            const plusButton = createPlusButton();
+            const crossButton = createCrossButton();
     
             // Append the input and buttons to the new URL item
             newUrlItem.appendChild(input);
@@ -345,25 +327,9 @@ function PopulateEditScreen(workflow=null){
         newUrlItem.classList.add('list-item');
 
         // Create the input and buttons for the new URL item
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'Add URL';
-        input.classList.add('url-input');
-        input.style.width = '250px';
-
-        const plusButton = document.createElement('button');
-        plusButton.classList.add('field-icon');
-        plusButton.style.width = '50px';
-        plusButton.innerHTML = '➕';
-        plusButton.title = "Add URL below";
-        plusButton.addEventListener('click', AddUrlClicked);
-
-        const crossButton = document.createElement('button');
-        crossButton.classList.add('field-icon');
-        crossButton.style.width = '50px';
-        crossButton.innerHTML = '❌';
-        crossButton.title = "Delete URL";
-        crossButton.addEventListener('click', DeleteUrlClicked);
+        const input = createInputUrlField();
+        const plusButton = createPlusButton();
+        const crossButton = createCrossButton();
 
         // Append the input and buttons to the new URL item
         newUrlItem.appendChild(input);
@@ -402,6 +368,7 @@ function SyncWorkflows()
         const workflowButton = document.createElement('button');
         workflowButton.style = 'width: 200px; text-align: left; padding-left: 5px; color: #b3b3b3;';
         workflowButton.textContent = workflow.name;
+        workflowButton.id = 'WorkflowButton';
         workflowButton.addEventListener('click', OpenWorkflowClicked);
     
         // Create the edit button
@@ -409,8 +376,14 @@ function SyncWorkflows()
         editButton.className = 'field-icon';
         editButton.id = 'EditWorkflowButton';
         editButton.title = "Edit Workflow";
-        editButton.style = 'width: 30px';``
-        editButton.textContent = '✏️'; // Edit icon
+        editButton.style = 'width: 30px;';
+        
+        // Create an image element and set it inside the button
+        const editIcon = document.createElement('img');
+        editIcon.src = 'Icons/edit.png'; // Path to your image
+        editIcon.alt = 'Edit Workflow Icon'; // Alternate text for accessibility
+        editIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+        editButton.appendChild(editIcon);
         editButton.addEventListener('click', EditWorkflowClicked); // Edit icon
     
         // Create the delete button
@@ -419,9 +392,14 @@ function SyncWorkflows()
         deleteButton.id = 'DeleteWorkflowButton';
         deleteButton.title = "Delete Workflow"
         deleteButton.style = 'width: 30px';
-        deleteButton.textContent = '❌'; // Delete icon
-        deleteButton.addEventListener('click', DeleteWorkflowClicked);
-        
+
+        const deleteIcon = document.createElement('img');
+        deleteIcon.src = 'Icons/delete.png'; // Path to your image
+        deleteIcon.alt = 'Delete Workflow Icon'; // Alternate text for accessibility
+        deleteIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+        deleteButton.appendChild(deleteIcon);
+        deleteButton.addEventListener('click', DeleteWorkflowClicked); // Delete icon
+       
         // Append the buttons to the url-item div
         workflowItem.appendChild(workflowButton);
         workflowItem.appendChild(editButton);
@@ -462,8 +440,14 @@ function OpenWorkflowClicked(event)
 
 function EditWorkflowClicked(event)
 {
-    const parentDiv = event.target.parentNode;
-    const firstButton = parentDiv.querySelector('button:first-child');
+    let parentNode;
+    console.log(`${event.target.tagName}`);
+    if (event.target.tagName === 'IMG') {
+        parentNode = event.target.parentNode.parentNode;
+    } else {
+        parentNode = event.target.parentNode;
+    }
+    const firstButton = parentNode.querySelector('#WorkflowButton');
     const workflowName = firstButton.textContent;
 
     for (var i = 0; i < Workflows.length; i++)
@@ -490,13 +474,27 @@ function LoadOpenedTabs(workflow)
 
 function DeleteWorkflowClicked(event)
 {
-    const button = event.target;
-    if (button.classList.contains('field-icon') && button.textContent === '❌') {
+    let button;
+    if (event.target.tagName === 'IMG') {
+        button = event.target.parentNode;
+    } else {
+        button = event.target;
+    }
+
+    if (button.classList.contains('field-icon')) {
           button.parentNode.remove();
     }
 
-    const parentDiv = event.target.parentNode;
+    let parentDiv;
+    console.log(`${event.target.tagName}`);
+    if (event.target.tagName === 'IMG') {
+        parentDiv = event.target.parentNode.parentNode;
+    } else {
+        parentDiv = event.target.parentNode;
+    }
+    
     const firstButton = parentDiv.querySelector('button:first-child');
+    console.log(`${firstButton.textContent}`);
     Workflows = Workflows.filter(workflow => workflow.name !== firstButton.textContent);
 
     SaveWorkflowsToStorage();
@@ -509,31 +507,20 @@ function DeleteWorkflowClicked(event)
 }
 
 function AddUrlClicked(event) {
-    const button = event.target;
+    let button;
+    if (event.target.tagName === 'IMG') {
+        button = event.target.parentNode;
+    } else {
+        button = event.target;
+    }
     // Create a new URL item element
     const newUrlItem = document.createElement('div');
     newUrlItem.classList.add('list-item');
 
     // Create the input and buttons for the new URL item
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Add URL';
-    input.classList.add('url-input');
-    input.style.width = '250px';
-
-    const plusButton = document.createElement('button');
-    plusButton.classList.add('field-icon');
-    plusButton.style.width = '50px';
-    plusButton.innerHTML = '➕';
-    plusButton.title = "Add URL below";
-    plusButton.addEventListener('click', AddUrlClicked);
-
-    const crossButton = document.createElement('button');
-    crossButton.classList.add('field-icon');
-    crossButton.style.width = '50px';
-    crossButton.innerHTML = '❌';
-    crossButton.title = "Delete URL";
-    crossButton.addEventListener('click', DeleteUrlClicked);
+    const input = createInputUrlField();
+    const plusButton = createPlusButton();
+    const crossButton = createCrossButton();
 
     // Append the input and buttons to the new URL item
     newUrlItem.appendChild(input);
@@ -545,8 +532,16 @@ function AddUrlClicked(event) {
     input.focus();
 }
 
+
+
+
 function DeleteUrlClicked(event) {
-    const button = event.target;
+    let button;
+    if (event.target.tagName === 'IMG') {
+        button = event.target.parentNode;
+    } else {
+        button = event.target;
+    }
     if (button.classList.contains('field-icon') && button.textContent === '❌') {
         // Check if there's only one URL item left
         const urlItems = document.querySelectorAll('.list-item');
@@ -567,3 +562,46 @@ function ShowStatusMessage(message) {
 }
 
 LoadWorkflowsFromStorage();
+
+
+
+//Helper Functions
+
+function createInputUrlField()
+{
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Add URL';
+    input.classList.add('url-input');
+    input.style.width = '250px';
+    return input;
+}
+function createPlusButton() {
+    const plusButton = document.createElement('button');
+    plusButton.classList.add('field-icon');
+    plusButton.style.width = '50px';
+    plusButton.title = "Add URL below";
+    
+    const plusIcon = document.createElement('img');
+    plusIcon.src = 'Icons/create.png'; // Path to your image
+    plusIcon.alt = 'Add Workflow Icon'; // Alternate text for accessibility
+    plusIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    plusButton.appendChild(plusIcon);
+    plusButton.addEventListener('click', AddUrlClicked); // Edit icon
+    return plusButton;
+}
+
+function createCrossButton() {
+    const crossButton = document.createElement('button');
+    crossButton.classList.add('field-icon');
+    crossButton.style.width = '50px';
+    crossButton.title = "Delete URL";
+    
+    const deleteIcon = document.createElement('img');
+    deleteIcon.src = 'Icons/delete.png'; // Path to your image
+    deleteIcon.alt = 'Add Workflow Icon'; // Alternate text for accessibility
+    deleteIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    crossButton.appendChild(deleteIcon);
+    crossButton.addEventListener('click', DeleteUrlClicked);
+    return crossButton;
+}
