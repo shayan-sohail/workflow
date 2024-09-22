@@ -173,6 +173,42 @@ document.getElementById("LoadWorkflowsFromFileButton").addEventListener("click",
 
 });
 
+document.getElementById("CaptureTabsButton").addEventListener("click", function() {
+    CreateWorkflowFromOpenedTabs();
+});
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        console.log('Enter key pressed');
+
+        if (document.activeElement.id === 'WorkflowTitle') {
+            console.log('Enter key pressed while focused on WorkflowTitle');
+
+            // Find the first input in the UrlList
+            const firstUrlInput = document.querySelector('#UrlList .url-input');
+
+            // Highlight the input (e.g., by adding a border)
+            if (firstUrlInput) {
+                firstUrlInput.focus(); // Optionally, move the focus to this input
+            }
+        }
+        else if (document.activeElement.classList.contains('url-input')) {
+            console.log('Enter key pressed while focused on element with class "url-input"');
+
+            // Simulate a click event on the plus button next to the focused input
+            const currentInput = document.activeElement;
+            const plusButton = currentInput.nextElementSibling;
+
+            if (plusButton && plusButton.tagName === 'BUTTON') {
+                // Call AddUrlClicked with the simulated event
+                AddUrlClicked({ target: plusButton });
+            }
+
+        }
+    }
+});
+
+
 function LoadWorkflowsFromFile() {
     return new Promise((resolve, reject) => {
         // Create an input element to trigger the file picker dialog
@@ -506,6 +542,7 @@ function AddUrlClicked(event) {
 
     // Insert the new URL item after the clicked button's parent
     button.parentNode.after(newUrlItem);
+    input.focus();
 }
 
 function DeleteUrlClicked(event) {
