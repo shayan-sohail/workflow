@@ -44,6 +44,7 @@ function CreateWorkflowFromOpenedTabs() {
             // Still call ImportWorkflowClicked, in case there are no tabs
             LoadOpenedTabs(workflow);
         }
+        document.getElementById("WorkflowTitle").focus();
     });    
 }
 
@@ -206,6 +207,36 @@ document.addEventListener('keydown', function(event) {
 
         }
     }
+    else if (event.ctrlKey && event.key === 'Home') {
+        event.preventDefault();
+        if (document.getElementById("EditScreen").style.display === "block"){
+            document.getElementById("WorkflowTitle").focus();
+        }
+    }
+    else if (event.ctrlKey && event.key === 's') {
+        event.preventDefault();
+        if (document.getElementById("EditScreen").style.display === "block"){
+            document.getElementById('SaveWorkFlowButton').click();
+        } else if (Workflows.length > 0) {
+            document.getElementById('SaveWorkflowsAsFileButton').click();
+        }
+    }
+    else if (event.ctrlKey && event.key === 'o') {
+        event.preventDefault();
+        if (document.getElementById("EditScreen").style.display != "block"){
+            document.getElementById('LoadWorkflowsFromFileButton').click();
+        }
+    }
+    else if (event.ctrlKey && event.key === 'a') {
+        event.preventDefault();
+        if (document.getElementById("EditScreen").style.display != "block"){
+            document.getElementById('CaptureTabsButton').click();
+        }
+    }
+    else if (event.ctrlKey && event.key === 'n' && document.getElementById("EditScreen").style.display != "block") {
+        event.preventDefault();
+        document.getElementById('CreateWorkFlowButton').click();
+    }
 });
 
 function LoadWorkflowsFromFile() {
@@ -295,7 +326,6 @@ function PopulateEditScreen(workflow=null){
     var isedit = workflow != null;
     workflowTitle = document.getElementById("WorkflowTitle");
     const urlList = document.querySelector('.url-list');
-
     if (isedit)
     {
         workflow.editFlag = true;
@@ -341,6 +371,7 @@ function PopulateEditScreen(workflow=null){
         urlList.appendChild(newUrlItem);
 
         const elementToFocus = document.getElementById("WorkflowTitle");
+        console.log("Focusing");
         elementToFocus.focus();
     }
 }
@@ -367,7 +398,7 @@ function SyncWorkflows()
     
         // Create the button element for the workflow name
         const workflowButton = document.createElement('button');
-        workflowButton.style = 'width: 250px; text-align: left; padding-left: 5px; color: #2b2b2b;';
+        workflowButton.style = 'width: 215px; text-align: left; padding-left: 5px; color: #2b2b2b;';
         workflowButton.textContent = workflow.name;
         workflowButton.id = 'WorkflowButton';
         workflowButton.addEventListener('click', OpenWorkflowClicked);
@@ -547,13 +578,13 @@ function createEditWorkflowButton()
     editButton.classList.add('field-icon');
     editButton.id = 'EditWorkflowButton';
     editButton.title = "Edit Workflow";
-    editButton.style.width = '50px';
+    editButton.style.width = '35px';
     
     // Create an image element and set it inside the button
     const editIcon = document.createElement('img');
     editIcon.src = 'Icons/edit.png'; // Path to your image
     editIcon.alt = 'Edit Workflow Icon'; // Alternate text for accessibility
-    editIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    editIcon.style = 'width: 18px; height: 18px;'; // Make sure the image fills the button
     editButton.appendChild(editIcon);
     editButton.addEventListener('click', EditWorkflowClicked); // Edit icon
 
@@ -567,12 +598,12 @@ function createDeleteWorkflowButton()
     deleteButton.classList.add('field-icon');
     deleteButton.id = 'DeleteWorkflowButton';
     deleteButton.title = "Delete Workflow"
-    deleteButton.style.width = '50px';
+    deleteButton.style.width = '35px';
 
     const deleteIcon = document.createElement('img');
     deleteIcon.src = 'Icons/delete.png'; // Path to your image
     deleteIcon.alt = 'Delete Workflow Icon'; // Alternate text for accessibility
-    deleteIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    deleteIcon.style = 'width: 18px; height: 18px;'; // Make sure the image fills the button
     deleteButton.appendChild(deleteIcon);
     deleteButton.addEventListener('click', DeleteWorkflowClicked); // Delete icon
     
@@ -585,20 +616,20 @@ function createInputUrlField()
     input.type = 'text';
     input.placeholder = 'Add URL';
     input.classList.add('url-input');
-    input.style.width = '250px';
+    input.style.width = '220px';
     return input;
 }
 
 function createPlusButton() {
     const plusButton = document.createElement('button');
     plusButton.classList.add('field-icon');
-    plusButton.style.width = '50px';
+    plusButton.style.width = '35px';
     plusButton.title = "Add URL below";
     
     const plusIcon = document.createElement('img');
     plusIcon.src = 'Icons/create.png'; // Path to your image
     plusIcon.alt = 'Add Workflow Icon'; // Alternate text for accessibility
-    plusIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    plusIcon.style = 'width: 18px; height: 18px;'; // Make sure the image fills the button
     plusButton.appendChild(plusIcon);
     plusButton.addEventListener('click', AddUrlClicked); // Edit icon
     return plusButton;
@@ -607,13 +638,13 @@ function createPlusButton() {
 function createCrossButton() {
     const crossButton = document.createElement('button');
     crossButton.classList.add('field-icon');
-    crossButton.style.width = '50px';
+    crossButton.style.width = '35px';
     crossButton.title = "Delete URL";
     
     const deleteIcon = document.createElement('img');
     deleteIcon.src = 'Icons/delete.png'; // Path to your image
     deleteIcon.alt = 'Add Workflow Icon'; // Alternate text for accessibility
-    deleteIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    deleteIcon.style = 'width: 18px; height: 18px;'; // Make sure the image fills the button
     crossButton.appendChild(deleteIcon);
     crossButton.addEventListener('click', DeleteUrlClicked);
     return crossButton;
