@@ -367,39 +367,13 @@ function SyncWorkflows()
     
         // Create the button element for the workflow name
         const workflowButton = document.createElement('button');
-        workflowButton.style = 'width: 200px; text-align: left; padding-left: 5px; color: #2b2b2b;';
+        workflowButton.style = 'width: 250px; text-align: left; padding-left: 5px; color: #2b2b2b;';
         workflowButton.textContent = workflow.name;
         workflowButton.id = 'WorkflowButton';
         workflowButton.addEventListener('click', OpenWorkflowClicked);
     
-        // Create the edit button
-        const editButton = document.createElement('button');
-        editButton.className = 'field-icon';
-        editButton.id = 'EditWorkflowButton';
-        editButton.title = "Edit Workflow";
-        editButton.style = 'width: 30px;';
-        
-        // Create an image element and set it inside the button
-        const editIcon = document.createElement('img');
-        editIcon.src = 'Icons/edit.png'; // Path to your image
-        editIcon.alt = 'Edit Workflow Icon'; // Alternate text for accessibility
-        editIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
-        editButton.appendChild(editIcon);
-        editButton.addEventListener('click', EditWorkflowClicked); // Edit icon
-    
-        // Create the delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'field-icon';
-        deleteButton.id = 'DeleteWorkflowButton';
-        deleteButton.title = "Delete Workflow"
-        deleteButton.style = 'width: 30px';
-
-        const deleteIcon = document.createElement('img');
-        deleteIcon.src = 'Icons/delete.png'; // Path to your image
-        deleteIcon.alt = 'Delete Workflow Icon'; // Alternate text for accessibility
-        deleteIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
-        deleteButton.appendChild(deleteIcon);
-        deleteButton.addEventListener('click', DeleteWorkflowClicked); // Delete icon
+        const editButton = createEditWorkflowButton();
+        const deleteButton = createDeleteWorkflowButton();
        
         // Append the buttons to the url-item div
         workflowItem.appendChild(workflowButton);
@@ -543,7 +517,7 @@ function DeleteUrlClicked(event) {
     } else {
         button = event.target;
     }
-    if (button.classList.contains('field-icon') && button.textContent === '❌') {
+    if (button.classList.contains('field-icon')) {
         // Check if there's only one URL item left
         const urlItems = document.querySelectorAll('.list-item');
         if (urlItems.length > 1) {
@@ -567,6 +541,43 @@ LoadWorkflowsFromStorage();
 
 
 //Helper Functions
+function createEditWorkflowButton()
+{
+    const editButton = document.createElement('button');
+    editButton.classList.add('field-icon');
+    editButton.id = 'EditWorkflowButton';
+    editButton.title = "Edit Workflow";
+    editButton.style.width = '50px';
+    
+    // Create an image element and set it inside the button
+    const editIcon = document.createElement('img');
+    editIcon.src = 'Icons/edit.png'; // Path to your image
+    editIcon.alt = 'Edit Workflow Icon'; // Alternate text for accessibility
+    editIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    editButton.appendChild(editIcon);
+    editButton.addEventListener('click', EditWorkflowClicked); // Edit icon
+
+    return editButton;
+}
+
+function createDeleteWorkflowButton()
+{
+    // Create the delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('field-icon');
+    deleteButton.id = 'DeleteWorkflowButton';
+    deleteButton.title = "Delete Workflow"
+    deleteButton.style.width = '50px';
+
+    const deleteIcon = document.createElement('img');
+    deleteIcon.src = 'Icons/delete.png'; // Path to your image
+    deleteIcon.alt = 'Delete Workflow Icon'; // Alternate text for accessibility
+    deleteIcon.style = 'width: 20px; height: 20px;'; // Make sure the image fills the button
+    deleteButton.appendChild(deleteIcon);
+    deleteButton.addEventListener('click', DeleteWorkflowClicked); // Delete icon
+    
+    return deleteButton;
+}
 
 function createInputUrlField()
 {
@@ -577,6 +588,7 @@ function createInputUrlField()
     input.style.width = '250px';
     return input;
 }
+
 function createPlusButton() {
     const plusButton = document.createElement('button');
     plusButton.classList.add('field-icon');
