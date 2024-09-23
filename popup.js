@@ -367,7 +367,7 @@ function SyncWorkflows()
     
         // Create the button element for the workflow name
         const workflowButton = document.createElement('button');
-        workflowButton.style = 'width: 200px; text-align: left; padding-left: 5px; color: #b3b3b3;';
+        workflowButton.style = 'width: 200px; text-align: left; padding-left: 5px; color: #2b2b2b;';
         workflowButton.textContent = workflow.name;
         workflowButton.id = 'WorkflowButton';
         workflowButton.addEventListener('click', OpenWorkflowClicked);

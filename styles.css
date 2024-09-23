@@ -4,8 +4,8 @@ body {
     padding: 0;
     height: 300px;
     width: 300px;
-    background-color: #2a2a2a; /* Dark background color */
-    color: #ffffff; /* White text color */
+    background-color: #bbbbbb; /* Dark background color */
+    color: #2b2b2b; /* White text color */
     display: flex;
     flex-direction: column;
 }
@@ -13,7 +13,7 @@ body {
 .title {
     font-size: 18px;
     margin: 20px 0px 0px 20px;
-    color: #e1e1e1; /* Slightly lighter than white */
+    color: #2b2b2b; /* Slightly lighter than white */
 }
 
 .title-container {
@@ -60,11 +60,11 @@ body {
 
 p {
     margin: 10px 0;
-    color: #b3b3b3; /* Gray color for secondary text */
+    color: #2b2b2b; /* Gray color for secondary text */
     font-size: 14px;
 }
 .title::placeholder {
-    color: #999;
+    color: #2b2b2b;
     font-style: italic;
   }
 hr {
@@ -74,7 +74,7 @@ hr {
     border: none;
     margin-bottom: 0px;
     height: 1px;
-    background-color: #444444; /* Subtle separator color */
+    background-color: #2b2b2b; /* Subtle separator color */
 }
 
 button {
@@ -82,14 +82,14 @@ button {
     font-size: 14px;
     width: 100%;
     cursor: pointer;
-    background-color: #2a2a2a; /* Button background color */
+    background-color: #bbbbbb; /* Button background color */
     border: none;
-    color: #e1e1e1; /* Button text color */
+    color: #2b2b2b; /* Button text color */
     margin: 0;
 }
 
 button:hover {
-    background-color: #363636; /* Darker on hover */
+    background-color: #999999; /* Darker on hover */
 }
 
 /* Flexbox layout for positioning */
@@ -124,9 +124,9 @@ button:hover {
 }
 
 .url-input {
-    border: 1px solid #2a2a2a;
-    background-color: #2a2a2a;
-    color: #e1e1e1;
+    border: 1px solid #bbbbbb;
+    background-color: #bbbbbb;
+    color: #2b2b2b;
     outline: none;
     font-size: 14px;
 }
@@ -138,7 +138,7 @@ button:hover {
 .field-icon {
     background-color: transparent;
     border: none;
-    color: #e1e1e1;
+    color: #2b2b2b;
     font-size: 16px;
     cursor: pointer;
     margin-left: 0px;
@@ -148,40 +148,40 @@ button:hover {
     font-size: 14px;
     text-align: center;
     align-items: center;
-    background-color: #2a2a2a;
+    background-color: #bbbbbb;
     width: 100%;
     height: 40px;
     padding: 10px 0px;
     border: none;
     cursor: pointer;
-    color: #e1e1e1;
+    color: #2b2b2b;
     margin-top: 10px;
 }
 
 .info-string {
     font-size: 11px;
     text-align: left;
-    background-color: #2a2a2a;
+    background-color: #bbbbbb;
     width: 100%;
     height: 40px;
     padding: 10px;
     border: none;
     cursor: pointer;
-    color: #e1e1e1;
+    color: #2b2b2b;
     margin-top: 10px;
 }
 
 .save-button:hover {
-    background-color: #363636;
+    background-color: #999;
 }
 
 #WorkflowTitle{
-    border: 1px solid #2a2a2a;
-    background-color: #2a2a2a;
+    border: 1px solid #bbb;
+    background-color: #bbb;
     border: none;
     font-style: normal;
 }
 #WorkflowTitle::placeholder{
-    color: #777;
+    color: #2b2b2b;
     font-style: normal;
 }
